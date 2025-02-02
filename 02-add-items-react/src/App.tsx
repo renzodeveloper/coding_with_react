@@ -83,6 +83,15 @@ const App = () => {
             return (
               <li key={item.id}>
                 <span>{item.text}</span>
+                <button onClick={() => {
+                  setItems(
+                    (prevItems) => {
+                      return prevItems.filter(currentItem => currentItem.id !== item.id)
+                    }
+                  )
+                }}>
+                  Removing item
+                </button>
               </li>
             );
           })}
