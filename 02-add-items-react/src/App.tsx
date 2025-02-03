@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
 
+type ItemId = `${string}-${string}-${string}-${string}-${string}`;
+
 interface Item {
-  id: `${string}-${string}-${string}-${string}-${string}`;
+  id: ItemId;
   timestamp: number;
   text: string;
 }
@@ -32,12 +34,12 @@ const INITIAL_ITEMS: Item[] = [
 
 const App = () => {
   const [items, setItems] = useState(INITIAL_ITEMS);
-  
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const { elements } = event.currentTarget;
-    const input = elements.namedItem('item');
+    const input = elements.namedItem("item");
     const isInput = input instanceof HTMLInputElement;
     if (!isInput || input.value == null) return;
 
@@ -47,20 +49,34 @@ const App = () => {
       timestamp: Date.now(),
     };
 
+    setItems((prevItems) => {
+      return [...prevItems, newItem];
+    });
+
+    input.value = "";
+  };
+
+  /* const createHandleRemoveItem = (id: ItemId) => () => {
     setItems(
       (prevItems) => {
-        return [...prevItems, newItem];
+        return prevItems.filter(currentItem => currentItem.id !== id)
       }
-    );
+    )
+  } */
 
-    input.value = '';
+  function createHandleRemoveItem(id: ItemId) {
+    return function () {
+      setItems((prevItems) => {
+        return prevItems.filter((currentItem) => currentItem.id !== id);
+      });
+    };
   }
 
   return (
     <main>
       <aside>
         <h1>React Technical Test</h1>
-        <h2>Adding and Deleting items to the list</h2>
+        <h2>Adding and Removing items in the list</h2>
 
         <form onSubmit={handleSubmit}>
           <label>
@@ -78,24 +94,24 @@ const App = () => {
 
       <section>
         <h2>List of items</h2>
-        <ul>
-          {items.map((item) => {
+        {items.length === 0 ? (
+          <p>
+            <strong>The list is empty.</strong>
+          </p>
+        ) : (
+          items.map((item) => {
             return (
-              <li key={item.id}>
-                <span>{item.text}</span>
-                <button onClick={() => {
-                  setItems(
-                    (prevItems) => {
-                      return prevItems.filter(currentItem => currentItem.id !== item.id)
-                    }
-                  )
-                }}>
-                  Removing item
-                </button>
-              </li>
+              <ul>
+                <li key={item.id}>
+                  <span>{item.text}</span>
+                  <button onClick={createHandleRemoveItem(item.id)}>
+                    Removing item
+                  </button>
+                </li>
+              </ul>
             );
-          })}
-        </ul>
+          })
+        )}
       </section>
     </main>
   );
