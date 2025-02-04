@@ -9,7 +9,7 @@ interface Item {
   text: string;
 }
 
-const INITIAL_ITEMS: Item[] = [
+/* const INITIAL_ITEMS: Item[] = [
   {
     id: crypto.randomUUID(),
     timestamp: Date.now(),
@@ -30,10 +30,10 @@ const INITIAL_ITEMS: Item[] = [
     timestamp: Date.now(),
     text: "Movies 📽️",
   },
-];
+]; */
 
 const App = () => {
-  const [items, setItems] = useState(INITIAL_ITEMS);
+  const [items, setItems] = useState<Item[]>([]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -78,7 +78,7 @@ const App = () => {
         <h1>React Technical Test</h1>
         <h2>Adding and Removing items in the list</h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} aria-label="Adding items to the list">
           <label>
             Items to add:
             <input
@@ -102,7 +102,7 @@ const App = () => {
           <ul>
             {items.map((item) => (
               <li key={item.id}>
-                <span>{item.text}</span>
+                {item.text}
                 <button onClick={createHandleRemoveItem(item.id)}>
                   Removing item
                 </button>
