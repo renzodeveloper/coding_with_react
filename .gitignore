@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+.pnpm-store/
+pnpm-lock.yaml
+npm-debug.log
+pnpm-debug.log
+
 # testing
 /coverage
 

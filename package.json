@@ -1,0 +1,6 @@
+{
+	"devDependencies": {
+		"@types/multer": "^1.4.12",
+		"@types/node": "20.12.7"
+	}
+}
